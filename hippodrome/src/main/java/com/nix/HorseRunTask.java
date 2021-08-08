@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class HorseRunTask implements Runnable {
 
-    private final Queue<String> globalQueue = new ConcurrentLinkedQueue<String>();
+    private final Queue<String> globalQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void run() {
