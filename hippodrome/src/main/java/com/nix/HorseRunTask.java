@@ -14,7 +14,7 @@ public class HorseRunTask implements Runnable {
         int currentDistance = 0;
         Random rand = new Random();
 
-        int distance = 1000;
+        final int distance = 1000;
         while (currentDistance < distance) {
             currentDistance += rand.nextInt((200 - 100) + 200);
             try {
