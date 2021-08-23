@@ -11,13 +11,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @WebServlet(name = "sample-servlet", urlPatterns = "/sample")
 public class Servlet extends HttpServlet {
 
     private static final long serialVersionUID = -8948379822734246956L;
 
-    private static final List<String> userAgentList = new ArrayList<>();
+    private final Queue<String> userAgentQueue = new ConcurrentLinkedQueue<>();
 
     private static final Logger log = LoggerFactory.getLogger(Servlet.class);
 
@@ -31,17 +33,19 @@ public class Servlet extends HttpServlet {
         PrintWriter responseBody = resp.getWriter();
 
         String val = req.getRemoteHost() + " :: " + req.getHeader("User-Agent");
-        userAgentList.add(val);
+        userAgentQueue.add(val);
 
         resp.setContentType("text/html");
         responseBody.println("<h1 align=\"center\">List of users</h1>");
 
-        for (int i = 0, userAgentListSize = userAgentList.size(); i < userAgentListSize; i++) {
-            if (i == userAgentList.size() - 1) {
-                responseBody.println("<p align=\"center\"><b>" + i + " | " + userAgentList.get(i) + "</b></p>");
+        int i = 0;
+        for (String s : userAgentQueue) {
+            if (i == userAgentQueue.size() - 1) {
+                responseBody.println("<p align=\"center\"><b>" + i + " | " + s + "</b></p>");
             } else {
-                responseBody.println("<p align=\"center\">" + i + " | " + userAgentList.get(i) + "</p>");
+                responseBody.println("<p align=\"center\">" + i + " | " + s + "</p>");
             }
+            i++;
         }
     }
 
